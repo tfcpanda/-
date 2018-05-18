@@ -11,8 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-@Entity
-@Table(name = "news")
+
 public class News {
 	private int id;
 	private String title;
@@ -20,12 +19,7 @@ public class News {
 	private String content;
 	private Date pubdate;
 
-	/*
-	 * setter getter·½·¨
-	 */
-	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	
 	public int getId() {
 		return id;
 	}
@@ -34,7 +28,6 @@ public class News {
 		this.id = id;
 	}
 
-	@Column(name = "title", length = 100)
 	public String getTitle() {
 		return title;
 	}
@@ -43,7 +36,6 @@ public class News {
 		this.title = title;
 	}
 
-	@Column(name = "author", length = 50)
 	public String getAuthor() {
 		return author;
 	}
@@ -52,7 +44,6 @@ public class News {
 		this.author = author;
 	}
 
-	@Column(name = "content", columnDefinition = "text")
 	public String getContent() {
 		return content;
 	}
@@ -61,7 +52,6 @@ public class News {
 		this.content = content;
 	}
 
-	@Column(name = "pubdate")
 	public Date getPubdate() {
 		return pubdate;
 	}
