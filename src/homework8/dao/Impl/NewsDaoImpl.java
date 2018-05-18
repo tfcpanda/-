@@ -8,11 +8,14 @@ import org.springframework.stereotype.Repository;
 import homework8.dao.NewsDao;
 import homework8.entity.News;
 
-@Repository("NewsDao")
 public class NewsDaoImpl implements NewsDao {
 
-	@Autowired
 	private SessionFactory sessionFactory;
+	
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
 	private Session getSession(){
 		return sessionFactory.getCurrentSession();
 	}

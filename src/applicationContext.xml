@@ -3,16 +3,21 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-4.0.xsd
-	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
 
 
 
 	<context:component-scan base-package="homework8" />
+	<!-- 数据库连接 -->
 	<bean id="dataSource"
 		class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="user" value="root"></property>
@@ -21,11 +26,27 @@
 			value="jdbc:mysql://localhost:3306/news"></property>
 		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
 	</bean>
+	<!-- session工厂 -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="configLocation"
 			value="classpath:hibernate.cfg.xml"></property>
+	</bean>
+
+	<!-- 配置bean -->
+	<bean id="NewsDao" class="homework8.dao.Impl.NewsDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="NewsService"
+		class="homework8.service.impl.NewsServiceImpl">
+		<property name="NewsDao" ref="NewsDao"></property>
+	</bean>
+
+	<bean id="homeworkController"
+		class="homework8.controller.HomeworkController">
+		<property name="NewsService" ref="NewsService"></property>
 	</bean>
 
 	<bean id="transactionManager"
@@ -35,5 +56,19 @@
 
 	<tx:annotation-driven
 		transaction-manager="transactionManager" />
+	<!-- 配置事物属性 -->
+	<tx:advice id="txAdvice"
+		transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 将事物属性和切入关联点关联起来 -->
+	<aop:config>
+		<aop:pointcut
+			expression="execution(*homework8.service.*.*(..))" id="txPointCut" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut" />
+	</aop:config>
 
 </beans>

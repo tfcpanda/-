@@ -8,11 +8,16 @@ import homework8.entity.News;
 import homework8.service.NewsService;
 import homework8.service.Impl.NewsServiceImpl;
 
-@Controller
+
 public class HomeworkController {
-	@Autowired
+
 	private NewsService newsService;
 	
+	public void setNewsService(NewsService newsService) {
+		this.newsService = newsService;
+	}
+
+
 	public void execute(News news){
 		newsService.add(news);
 	}

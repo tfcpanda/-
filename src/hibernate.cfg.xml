@@ -27,7 +27,7 @@
 		<property name="jdbc.batch_size">30</property>
 		<!-- MYSQL不支持的语句，完成 -->
 
-		<mapping resource="homework8.entity/News.hbm.xml"/>
+		<mapping resource="homework8/entity/News.hbm.xml"/>
 	
 	</session-factory>
 </hibernate-configuration>

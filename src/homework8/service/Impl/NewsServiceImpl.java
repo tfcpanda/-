@@ -9,15 +9,16 @@ import homework8.dao.NewsDao;
 import homework8.entity.News;
 import homework8.service.NewsService;
 
-@Service("NewsService")
 public class NewsServiceImpl implements NewsService {
 
-	@Autowired
 	private NewsDao newsDao;
-	@Transactional
+	
+	public void setNewsDao(NewsDao newsDao) {
+		this.newsDao = newsDao;
+	}
+	
 	public void add(News news) {
 		newsDao.add(news);
 	}
-
 
 }
